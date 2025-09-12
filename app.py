@@ -1,12 +1,29 @@
 import streamlit as st
 import pandas as pd
 import joblib
+import Template
 
 # Load your pre-trained pipeline and model
 preprocessor = joblib.load("preprocessor.pkl")
 model = joblib.load("model.pkl")
 
 st.title("Predict from Uploaded Data")
+df_template = Template.get_template()
+
+# Show the template
+st.subheader("Preview of Template")
+st.dataframe(df_template.head())
+
+# Download button
+csv = df_template.to_csv(index=False).encode('utf-8')
+st.download_button(
+    label="Download Template CSV",
+    data=csv,
+    file_name='sheet_template.csv',
+    mime='text/csv'
+)
+
+
 
 # File uploader for CSV
 uploaded_file = st.file_uploader("Upload your CSV file", type=["csv"])
